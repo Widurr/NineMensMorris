@@ -30,8 +30,10 @@ public class Controller : MonoBehaviour
     public bool isWhiteTurn
     { get; set; }
 
-    private int piecesPlaced = 0;
+    [SerializeField] private int piecesPlaced = 0;
     private bool gameOver = false;
+    [SerializeField] private int movePlatesCount;
+    CtrlFirstStage firstStage;
 
     // Start is called before the first frame update
     void Start()
@@ -39,20 +41,35 @@ public class Controller : MonoBehaviour
         gameState = GameState.placing;
         isWhiteTurn = true;
 
-        /*
+        
         //TESTING ONLY
-        GameObject obj = CreatePiece(true, 0, 0);
-        SetPosition(obj);
-        */
+       // GameObject obj = CreatePiece(true, 0, 0);
+       // SetPosition(obj);
+        
 
-        CtrlFirstStage firstStage = GetComponent<CtrlFirstStage>();
-        while (piecesPlaced < 18)
-        {
-             firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
-             isWhiteTurn = !isWhiteTurn;
-             piecesPlaced++;
-        }
+        firstStage = GetComponent<CtrlFirstStage>();
+        StartCoroutine(PlacingStage());
         gameState = GameState.moving;
+    }
+    private void Update()
+    {
+        movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
+    }
+
+    IEnumerator PlacingStage()
+    {
+        while (piecesPlaced < 18)
+            yield return StartCoroutine(AddPlates());
+
+    }
+
+    IEnumerator AddPlates()  // FIX - Now all piecec placed are doubled and it shows only black onex
+    {
+
+        firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+        yield return new WaitUntil(() => movePlatesCount == 0);
+        isWhiteTurn = !isWhiteTurn;
+        piecesPlaced++;
     }
 
     public GameObject CreatePiece(bool isWhite, int x, int y)

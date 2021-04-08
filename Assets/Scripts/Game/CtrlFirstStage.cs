@@ -21,12 +21,13 @@ public class CtrlFirstStage : MonoBehaviour
         
     }
 
+    
+
     public void CreateMovePlates(bool isWhite, GameObject[,] positions, bool[,] positionsMask)
     {
         
-        
         // Creating a piece that would be put on the board
-       GameObject obj = Instantiate(controllerScript.piece, new Vector3(-100f, 0f, -1f), Quaternion.identity);
+        GameObject obj = Instantiate(controllerScript.piece, new Vector3(-100f, 0f, -1f), Quaternion.identity);
         Piece p = obj.GetComponent<Piece>();
         p.isWhite = isWhite;
         p.Activate();
@@ -42,8 +43,8 @@ public class CtrlFirstStage : MonoBehaviour
                 if(controllerScript.PositionOnBoard(i, j))
                     MovePlateSpawn(i, j, obj);
             }
+
         }
-        
     }
 
     private void MovePlateSpawn(int x, int y, GameObject piece)
