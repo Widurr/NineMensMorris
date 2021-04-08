@@ -19,7 +19,6 @@ public class Piece : MonoBehaviour
     public void Activate()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");
-        Debug.Log("Piece.Activate");
         SetCoords();
 
         if (isWhite)

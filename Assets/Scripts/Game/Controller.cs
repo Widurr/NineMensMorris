@@ -40,14 +40,22 @@ public class Controller : MonoBehaviour
         isWhiteTurn = true;
 
         // TESTING ONLY
-        GameObject obj = CreatePiece(true, 0, 0);
-        SetPosition(obj);
-        
+        //GameObject obj = CreatePiece(true, 0, 0);
+        //SetPosition(obj);
+
+        CtrlFirstStage firstStage = GetComponent<CtrlFirstStage>();
+        while (piecesPlaced < 18)
+        {
+            firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+            isWhiteTurn = !isWhiteTurn;
+            piecesPlaced++;
+        }
+        gameState = GameState.moving;
     }
 
     public GameObject CreatePiece(bool isWhite, int x, int y)
     {
-        GameObject obj = Instantiate(piece, new Vector3(0, 0, -1), Quaternion.identity);
+        GameObject obj = Instantiate(piece, new Vector3(0f, 0f, -1f), Quaternion.identity);
         Piece p = obj.GetComponent<Piece>();
         p.isWhite = isWhite;
         p.xBoard = x;
@@ -65,7 +73,11 @@ public class Controller : MonoBehaviour
     }
     public void SetPositionEmpty(int x, int y)
     {
-        positions[x, y] = null;
+        try
+        {
+            positions[x, y] = null;
+        }
+        catch(System.IndexOutOfRangeException e) { }
     }
     public GameObject GetPosition(int x, int y)
     {
