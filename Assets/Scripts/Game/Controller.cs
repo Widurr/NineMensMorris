@@ -39,16 +39,18 @@ public class Controller : MonoBehaviour
         gameState = GameState.placing;
         isWhiteTurn = true;
 
-        // TESTING ONLY
-        //GameObject obj = CreatePiece(true, 0, 0);
-        //SetPosition(obj);
+        /*
+        //TESTING ONLY
+        GameObject obj = CreatePiece(true, 0, 0);
+        SetPosition(obj);
+        */
 
         CtrlFirstStage firstStage = GetComponent<CtrlFirstStage>();
         while (piecesPlaced < 18)
         {
-            firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
-            isWhiteTurn = !isWhiteTurn;
-            piecesPlaced++;
+             firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+             isWhiteTurn = !isWhiteTurn;
+             piecesPlaced++;
         }
         gameState = GameState.moving;
     }

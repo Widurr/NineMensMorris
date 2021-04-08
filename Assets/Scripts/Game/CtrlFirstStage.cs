@@ -7,12 +7,12 @@ public class CtrlFirstStage : MonoBehaviour
 {
 
     public GameObject movePlate;
-    private Controller controllerScript;
+    [SerializeField] private Controller controllerScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        controllerScript = GetComponent<Controller>();
+      //  controllerScript = GetComponent<Controller>();
     }
 
     // Update is called once per frame
@@ -23,14 +23,17 @@ public class CtrlFirstStage : MonoBehaviour
 
     public void CreateMovePlates(bool isWhite, GameObject[,] positions, bool[,] positionsMask)
     {
+        
+        
         // Creating a piece that would be put on the board
-        GameObject obj = Instantiate(controllerScript.piece, new Vector3(-100f, 0f, -1f), Quaternion.identity);
+       GameObject obj = Instantiate(controllerScript.piece, new Vector3(-100f, 0f, -1f), Quaternion.identity);
         Piece p = obj.GetComponent<Piece>();
         p.isWhite = isWhite;
         p.Activate();
         p.xBoard = -100;
         p.SetCoords();
 
+        
         // Creating the move plates
         for (int i = 0; i < positions.GetLength(0); i++)
         {
@@ -40,6 +43,7 @@ public class CtrlFirstStage : MonoBehaviour
                     MovePlateSpawn(i, j, obj);
             }
         }
+        
     }
 
     private void MovePlateSpawn(int x, int y, GameObject piece)

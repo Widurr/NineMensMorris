@@ -246,6 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePlate: {fileID: 7711385552916032380, guid: dc688c3ac705a6b4d9f900f1862c373c,
     type: 3}
+  controllerScript: {fileID: 75083775}
 --- !u!1001 &288152612
 PrefabInstance:
   m_ObjectHideFlags: 0
