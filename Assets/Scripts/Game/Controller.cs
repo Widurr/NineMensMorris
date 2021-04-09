@@ -42,10 +42,6 @@ public class Controller : MonoBehaviour
         isWhiteTurn = true;
 
         
-        //TESTING ONLY
-       // GameObject obj = CreatePiece(true, 0, 0);
-       // SetPosition(obj);
-        
 
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
@@ -63,13 +59,17 @@ public class Controller : MonoBehaviour
 
     }
 
-    IEnumerator AddPlates()  // FIX - Now all piecec placed are doubled and it shows only black onex
+    IEnumerator AddPlates()
     {
 
-        firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
-        yield return new WaitUntil(() => movePlatesCount == 0);
-        isWhiteTurn = !isWhiteTurn;
-        piecesPlaced++;
+        while (movePlatesCount < 2)
+        {
+            firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+            yield return new WaitForSeconds(0f);
+            isWhiteTurn = !isWhiteTurn;
+            piecesPlaced++;
+        }
+        
     }
 
     public GameObject CreatePiece(bool isWhite, int x, int y)
