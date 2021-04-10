@@ -218,6 +218,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   piece: {fileID: 3092624578117751863, guid: 9478288f391de3d468272c9590a5ac87, type: 3}
+  piecesPlaced: 0
+  movePlatesCount: 0
 --- !u!4 &75083776
 Transform:
   m_ObjectHideFlags: 0
@@ -254,6 +256,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2680059205947651108, guid: dc688c3ac705a6b4d9f900f1862c373c,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.6072666
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680059205947651108, guid: dc688c3ac705a6b4d9f900f1862c373c,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7877901525630492619, guid: dc688c3ac705a6b4d9f900f1862c373c,
         type: 3}
       propertyPath: m_RootOrder
