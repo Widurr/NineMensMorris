@@ -149,7 +149,7 @@ public class Controller : MonoBehaviour
         else
             n2 = GetPosition(xBoard - 2 * dx, yBoard);
 
-        if (!(n1 && n2))
+        if (n1 && n2)
         {
             if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
                     && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
@@ -170,14 +170,16 @@ public class Controller : MonoBehaviour
         else
             n1 = GetPosition(xBoard, yBoard - 2 * dy);
 
-        if (!(n1 && n2))
-            return false;
+        if (n1 && n2)
+        {
         else if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
                 && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
-        {
-            // vertical = true
-            return true;
+            {
+                // vertical = true
+                return true;
+            }
         }
+        return false;
     }
 
 }
