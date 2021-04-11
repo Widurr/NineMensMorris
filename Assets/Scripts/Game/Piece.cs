@@ -102,4 +102,9 @@ public class Piece : MonoBehaviour
             }
         }
     }
+
+    public bool IsInMill()
+    {
+        return gameController.GetComponent<Controller>().IsInMill(gameObject);
+    }
 }

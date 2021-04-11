@@ -111,4 +111,75 @@ public class Controller : MonoBehaviour
         return false;
     }
 
+    public bool IsInMill(GameObject piece)
+    {
+        if (!piece) // if null
+            return false;
+
+        var pieceScript = piece.GetComponent<Piece>();
+
+        int dx = 1;
+        int dy = 1;
+        int xBoard = pieceScript.xBoard;
+        int yBoard = pieceScript.yBoard;
+
+
+        // outer ring
+        if (xBoard == 0 || xBoard == 6)
+            dy = 3;
+        if (yBoard == 0 || yBoard == 6)
+            dx = 3;
+
+        // middle ring
+        if (xBoard == 1 || xBoard == 5)
+            dy = 2;
+        if (yBoard == 1 || yBoard == 5)
+            dx = 2;
+
+        // checking neighbours
+        bool vertical = true, horizontal = true;
+        GameObject n1, n2;
+        // horizontal
+        if(PositionOnBoard(xBoard - dx, yBoard))
+            n1 = GetPosition(xBoard - dx, yBoard);
+        else
+            n1 = GetPosition(xBoard + 2 * dx, yBoard);
+
+        if (PositionOnBoard(xBoard + dx, yBoard))
+            n2 = GetPosition(xBoard + dx, yBoard);
+        else
+            n2 = GetPosition(xBoard - 2 * dx, yBoard);
+
+        if (!(n1 && n2))
+            horizontal = false;
+        else if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
+                && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
+        {
+            // horizontal = true
+            return true;
+        }
+
+        // vertically
+        if (PositionOnBoard(xBoard, yBoard - dy))
+            n1 = GetPosition(xBoard, yBoard - dy);
+        else
+            n1 = GetPosition(xBoard, yBoard + 2*dy);
+
+        if (PositionOnBoard(xBoard, yBoard + dy))
+            n1 = GetPosition(xBoard, yBoard + dy);
+        else
+            n1 = GetPosition(xBoard, yBoard - 2 * dy);
+
+        if (!(n1 && n2))
+            vertical = false;
+        else if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
+                && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
+        {
+            // vertical = true
+            return true;
+        }
+
+        return horizontal || vertical;
+    }
+
 }
