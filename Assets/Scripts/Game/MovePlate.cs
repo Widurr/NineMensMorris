@@ -34,6 +34,7 @@ public class MovePlate : MonoBehaviour
             refPiece.DestroyMovePlates();
             if(script.IsInMill(reference))
                 KillerPlateSpawn(!script.isWhiteTurn);
+            script.isWhiteTurn = !script.isWhiteTurn;
             
         }
         else
@@ -43,7 +44,6 @@ public class MovePlate : MonoBehaviour
             refPiece.DestroyMovePlates();
             Destroy(reference);
         }
-            script.isWhiteTurn = !script.isWhiteTurn;
     }
 
     public void SetCoords(int x, int y)
@@ -63,6 +63,7 @@ public class MovePlate : MonoBehaviour
         reference = obj;
         gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1f, 0.0f, 0.0f, 1f);
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        gameObject.GetComponent<Collider2D>().enabled = true;
     }
 
     public GameObject GetReference() { return reference; }
