@@ -66,25 +66,40 @@ public class Piece : MonoBehaviour
 
     private void InitiateMovePlates()
     {
-        int xi = 1;
-        int yi = 1;
+        var ctrlScript = gameController.GetComponent<Controller>();
+        if (ctrlScript.piecesCount(isWhite) == 3)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (ctrlScript.PositionOnBoard(i, j))
+                        MovePlateSpawn(i, j);
+                }
+            }
+        }
+        else
+        {
+            int xi = 1;
+            int yi = 1;
 
-        // outer ring
-        if (xBoard == 0 || xBoard == 6)
-            yi = 3;
-        if (yBoard == 0 || yBoard == 6)
-            xi = 3;
+            // outer ring
+            if (xBoard == 0 || xBoard == 6)
+                yi = 3;
+            if (yBoard == 0 || yBoard == 6)
+                xi = 3;
 
-        // middle ring
-        if (xBoard == 1 || xBoard == 5)
-            yi = 2;
-        if (yBoard == 1 || yBoard == 5)
-            xi = 2;
+            // middle ring
+            if (xBoard == 1 || xBoard == 5)
+                yi = 2;
+            if (yBoard == 1 || yBoard == 5)
+                xi = 2;
 
-        MovePlateSpawn(xBoard - xi, yBoard);
-        MovePlateSpawn(xBoard + xi, yBoard);
-        MovePlateSpawn(xBoard, yBoard - yi);
-        MovePlateSpawn(xBoard, yBoard + yi);
+            MovePlateSpawn(xBoard - xi, yBoard);
+            MovePlateSpawn(xBoard + xi, yBoard);
+            MovePlateSpawn(xBoard, yBoard - yi);
+            MovePlateSpawn(xBoard, yBoard + yi);
+        }
     }
 
     private void MovePlateSpawn(int x, int y)
