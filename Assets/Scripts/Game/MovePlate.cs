@@ -11,7 +11,7 @@ public class MovePlate : MonoBehaviour
     // board, not world positions
     int boardX, boardY;
 
-    [SerializeField] bool isKillerPlate = false;
+    public bool isKillerPlate = false;
 
     public void OnMouseUp()
     {
@@ -70,9 +70,11 @@ public class MovePlate : MonoBehaviour
 
     private void KillerPlateSpawn(bool createOnWhite, bool destroyOnesInMills = false)
     {
+        Debug.Log("asdfasdfaaaaaaaaaaaaaaaaa");
         var controllerScript = controller.GetComponent<Controller>();
         GameObject piece;
         Piece pieceScript;
+        bool flag = false;
         for (int i = 0; i < 7; i++)
         {
             for (int j = 0; j < 7; j++)
@@ -83,8 +85,9 @@ public class MovePlate : MonoBehaviour
                     if (piece != null)
                     {
                         pieceScript = piece.GetComponent<Piece>();
-                        if(pieceScript.isWhite == createOnWhite && (!pieceScript.IsInMill() || destroyOnesInMills))
+                        if(pieceScript.isWhite == createOnWhite && (destroyOnesInMills || !pieceScript.IsInMill()))
                         {
+                            flag = true;
                             float worldX = i - 3;
                             float worldY = 3 - j;
 
@@ -98,7 +101,8 @@ public class MovePlate : MonoBehaviour
             }
         }
         // if all of enemies pieces are in mills, then you can destroy them too
-        if (GameObject.FindGameObjectsWithTag("MovePlate").Length == 0)
+            Debug.Log("asdfasdf");
+        if (!flag)
             KillerPlateSpawn(createOnWhite, true);
     }
 }

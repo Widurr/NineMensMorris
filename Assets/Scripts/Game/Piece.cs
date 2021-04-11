@@ -51,10 +51,15 @@ public class Piece : MonoBehaviour
         Controller ctrlScript = gameController.GetComponent<Controller>();
         if (ctrlScript.gameState == Controller.GameState.moving)
         {
-            DestroyMovePlates();
-            if (ctrlScript.isWhiteTurn == isWhite)
+            // checking if there's no deleting happening
+            var mp = GameObject.FindGameObjectWithTag("MovePlate");
+            if (!mp || !mp.GetComponent<MovePlate>().isKillerPlate)
             {
-                InitiateMovePlates();
+                DestroyMovePlates();
+                if (ctrlScript.isWhiteTurn == isWhite)
+                {
+                    InitiateMovePlates();
+                }
             }
         }
     }

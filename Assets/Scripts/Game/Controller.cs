@@ -65,10 +65,10 @@ public class Controller : MonoBehaviour
 
         while (movePlatesCount < 2)
         {
-            firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
-            yield return new WaitForSeconds(0f);
-            //isWhiteTurn = !isWhiteTurn; // its moved elsewhere
-            piecesPlaced++;
+                firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+                yield return new WaitForSeconds(0f);
+                //isWhiteTurn = !isWhiteTurn; // its moved elsewhere
+                piecesPlaced++;
         }
         
     }
