@@ -21,8 +21,7 @@ public class Controller : MonoBehaviour
     public enum GameState
     {
         placing,
-        moving,
-        flying
+        moving
     }
     public GameState gameState
     { get; private set; }
@@ -67,7 +66,6 @@ public class Controller : MonoBehaviour
         {
                 firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
                 yield return new WaitForSeconds(0f);
-                //isWhiteTurn = !isWhiteTurn; // its moved elsewhere
                 piecesPlaced++;
         }
         
@@ -180,5 +178,21 @@ public class Controller : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public int piecesCount(bool isWhite)
+    {
+        int counter = 0;
+        GameObject piece;
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                piece = GetPosition(i, j);
+                if (piece && piece.GetComponent<Piece>().isWhite == isWhite)
+                    counter++;
+            }
+        }
+        return counter;
     }
 }
