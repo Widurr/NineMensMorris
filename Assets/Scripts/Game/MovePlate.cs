@@ -26,6 +26,7 @@ public class MovePlate : MonoBehaviour
         script.SetPosition(reference);
 
         refPiece.DestroyMovePlates();
+        script.isWhiteTurn = !script.isWhiteTurn;
     }
 
     public void SetCoords(int x, int y)

@@ -45,11 +45,12 @@ public class Controller : MonoBehaviour
 
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
-        gameState = GameState.moving;
     }
     private void Update()
     {
         movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
+        if (piecesPlaced == 18)
+            gameState = GameState.moving;
     }
 
     IEnumerator PlacingStage()
@@ -66,7 +67,7 @@ public class Controller : MonoBehaviour
         {
             firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
             yield return new WaitForSeconds(0f);
-            isWhiteTurn = !isWhiteTurn;
+            //isWhiteTurn = !isWhiteTurn; // its moved elsewhere
             piecesPlaced++;
         }
         

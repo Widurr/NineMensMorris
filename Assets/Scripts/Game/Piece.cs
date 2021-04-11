@@ -48,8 +48,15 @@ public class Piece : MonoBehaviour
 
     void OnMouseUp()
     {
-        DestroyMovePlates();
-        InitiateMovePlates();
+        Controller ctrlScript = gameController.GetComponent<Controller>();
+        if (ctrlScript.gameState == Controller.GameState.moving)
+        {
+            DestroyMovePlates();
+            if (ctrlScript.isWhiteTurn == isWhite)
+            {
+                InitiateMovePlates();
+            }
+        }
     }
 
     private void InitiateMovePlates()
