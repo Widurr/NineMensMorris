@@ -15,13 +15,11 @@ public class MovePlate : MonoBehaviour
 
     public void OnMouseUp()
     {
-            Debug.Log("A");
             controller = GameObject.FindGameObjectWithTag("GameController");
             Controller script = controller.GetComponent<Controller>();
             Piece refPiece = reference.GetComponent<Piece>();
         if (!isKillerPlate)
         {
-            Debug.Log("BBBBBBBA");
 
             script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
 
@@ -39,7 +37,6 @@ public class MovePlate : MonoBehaviour
         }
         else
         {
-            Debug.Log("AAAAAAAAAA");
             script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
             refPiece.DestroyMovePlates();
             Destroy(reference);
@@ -70,7 +67,6 @@ public class MovePlate : MonoBehaviour
 
     private void KillerPlateSpawn(bool createOnWhite, bool destroyOnesInMills = false)
     {
-        Debug.Log("asdfasdfaaaaaaaaaaaaaaaaa");
         var controllerScript = controller.GetComponent<Controller>();
         GameObject piece;
         Piece pieceScript;
@@ -101,7 +97,6 @@ public class MovePlate : MonoBehaviour
             }
         }
         // if all of enemies pieces are in mills, then you can destroy them too
-            Debug.Log("asdfasdf");
         if (!flag)
             KillerPlateSpawn(createOnWhite, true);
     }
