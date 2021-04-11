@@ -137,7 +137,6 @@ public class Controller : MonoBehaviour
             dx = 2;
 
         // checking neighbours
-        bool vertical = true, horizontal = true;
         GameObject n1, n2;
         // horizontal
         if(PositionOnBoard(xBoard - dx, yBoard))
@@ -151,12 +150,13 @@ public class Controller : MonoBehaviour
             n2 = GetPosition(xBoard - 2 * dx, yBoard);
 
         if (!(n1 && n2))
-            horizontal = false;
-        else if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
-                && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
         {
-            // horizontal = true
-            return true;
+            if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
+                    && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
+            {
+                // horizontal = true
+                return true;
+            }
         }
 
         // vertically
@@ -171,15 +171,13 @@ public class Controller : MonoBehaviour
             n1 = GetPosition(xBoard, yBoard - 2 * dy);
 
         if (!(n1 && n2))
-            vertical = false;
+            return false;
         else if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
                 && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
         {
             // vertical = true
             return true;
         }
-
-        return horizontal || vertical;
     }
 
 }
