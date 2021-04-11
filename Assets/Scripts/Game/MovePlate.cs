@@ -6,27 +6,44 @@ public class MovePlate : MonoBehaviour
 {
     public GameObject controller;
 
-    GameObject reference = null;
+    [SerializeField] GameObject reference = null;
 
     // board, not world positions
     int boardX, boardY;
 
+    [SerializeField] bool isKillerPlate = false;
+
     public void OnMouseUp()
     {
-        controller = GameObject.FindGameObjectWithTag("GameController");
-        Controller script = controller.GetComponent<Controller>();
+            Debug.Log("A");
+            controller = GameObject.FindGameObjectWithTag("GameController");
+            Controller script = controller.GetComponent<Controller>();
+            Piece refPiece = reference.GetComponent<Piece>();
+        if (!isKillerPlate)
+        {
+            Debug.Log("BBBBBBBA");
 
-        Piece refPiece = reference.GetComponent<Piece>();
-        script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
+            script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
 
-        refPiece.xBoard = boardX;
-        refPiece.yBoard = boardY;
-        refPiece.SetCoords();
+            refPiece.xBoard = boardX;
+            refPiece.yBoard = boardY;
+            refPiece.SetCoords();
 
-        script.SetPosition(reference);
+            script.SetPosition(reference);
 
-        refPiece.DestroyMovePlates();
-        script.isWhiteTurn = !script.isWhiteTurn;
+            refPiece.DestroyMovePlates();
+            if(script.IsInMill(reference))
+                KillerPlateSpawn(!script.isWhiteTurn);
+            
+        }
+        else
+        {
+            Debug.Log("AAAAAAAAAA");
+            script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
+            refPiece.DestroyMovePlates();
+            Destroy(reference);
+        }
+            script.isWhiteTurn = !script.isWhiteTurn;
     }
 
     public void SetCoords(int x, int y)
@@ -40,5 +57,47 @@ public class MovePlate : MonoBehaviour
         reference = obj;
     }
 
+    private void MakeKiller(GameObject obj)
+    {
+        isKillerPlate = true;
+        reference = obj;
+        gameObject.GetComponent<SpriteRenderer>().color = new Vector4(1f, 0.0f, 0.0f, 1f);
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
     public GameObject GetReference() { return reference; }
+
+    private void KillerPlateSpawn(bool createOnWhite, bool destroyOnesInMills = false)
+    {
+        var controllerScript = controller.GetComponent<Controller>();
+        GameObject piece;
+        Piece pieceScript;
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                if(controllerScript.PositionOnBoard(i, j))
+                {
+                    piece = controllerScript.GetPosition(i, j);
+                    if (piece != null)
+                    {
+                        pieceScript = piece.GetComponent<Piece>();
+                        if(pieceScript.isWhite == createOnWhite && (!pieceScript.IsInMill() || destroyOnesInMills))
+                        {
+                            float worldX = i - 3;
+                            float worldY = 3 - j;
+
+                            GameObject mp = Instantiate(gameObject, new Vector3(worldX, worldY, -3.0f), Quaternion.identity);
+                            MovePlate mpScript = mp.GetComponent<MovePlate>();
+                            mpScript.MakeKiller(piece);
+                            mpScript.SetCoords(i, j);
+                        }
+                    }
+                }
+            }
+        }
+        // if all of enemies pieces are in mills, then you can destroy them too
+        if (GameObject.FindGameObjectsWithTag("MovePlate").Length == 0)
+            KillerPlateSpawn(createOnWhite, true);
+    }
 }
