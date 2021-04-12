@@ -41,6 +41,7 @@ public class MovePlate : MonoBehaviour
             refPiece.DestroyMovePlates();
             Destroy(reference);
         }
+        script.counter = script.piecesCount(script.isWhiteTurn);
     }
 
     public void SetCoords(int x, int y)

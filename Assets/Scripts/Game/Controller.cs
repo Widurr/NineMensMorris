@@ -33,7 +33,7 @@ public class Controller : MonoBehaviour
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
-    [SerializeField] private int counter;
+    [SerializeField] public int counter;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +59,7 @@ public class Controller : MonoBehaviour
 
     IEnumerator AddPlates()
     {
-
+        
         while (movePlatesCount < 2)
         {
                 firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
