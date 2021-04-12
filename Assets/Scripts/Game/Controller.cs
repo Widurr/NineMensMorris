@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
     public GameObject piece;
+    [SerializeField]public GameObject endScreen;
+    [SerializeField]public GameObject UIWhiteTurn;
+    [SerializeField]public GameObject UIBlackTurn;
+    [SerializeField] public Text endText;
 
     private GameObject[,] positions = new GameObject[7, 7];
     private bool[,] positionsMask = new bool[7, 7]
@@ -33,22 +38,21 @@ public class Controller : MonoBehaviour
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
-    [SerializeField] public int counter;
 
     // Start is called before the first frame update
     void Start()
     {
         gameState = GameState.placing;
         isWhiteTurn = true;
-
         
 
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
+        StartCoroutine(CountMovePlates());
     }
     private void Update()
     {
-        movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
+       
     }
 
     IEnumerator PlacingStage()
@@ -72,6 +76,14 @@ public class Controller : MonoBehaviour
            
         }
     
+    }
+    IEnumerator CountMovePlates()
+    {
+        while (gameState != GameState.moving)
+        {
+            movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
+            yield return new WaitForSeconds(0f);
+        }
     }
 
     public GameObject CreatePiece(bool isWhite, int x, int y)
@@ -198,4 +210,48 @@ public class Controller : MonoBehaviour
         }
         return counter;
     }
+
+    public void UITurnChange()
+    {
+        if(isWhiteTurn)
+        {
+            UIWhiteTurn.SetActive(true);
+            UIBlackTurn.SetActive(false);
+        }
+        else
+        {
+            UIWhiteTurn.SetActive(false);
+            UIBlackTurn.SetActive(true);
+        }
+    }
+
+    public bool IsWinner()
+    {
+        if(piecesCount(isWhiteTurn) == 2 && gameState == GameState.moving)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool WhoWon()
+    {
+        return !isWhiteTurn;
+    }
+    public void DeclareWinner()
+    {
+        if (IsWinner())
+        {
+            endScreen.SetActive(true);
+            if (WhoWon())
+            {
+                endText.text = "White won!";
+            }
+            else
+                endText.text = "Black won!";
+        }
+        else
+            UITurnChange();
+    }
+   
 }
