@@ -55,20 +55,23 @@ public class Controller : MonoBehaviour
     {
         while (piecesPlaced < 18)
             yield return StartCoroutine(AddPlates());
+        yield return new WaitUntil(() => movePlatesCount == 0);
+        gameState = GameState.moving;
     }
 
     IEnumerator AddPlates()
     {
-        
-        while (movePlatesCount < 2)
         {
+            while (movePlatesCount < 2)
+            {
                 firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
                 yield return new WaitForSeconds(0f);
-            if (piecesPlaced == 18)
-                gameState = GameState.moving;
-            piecesPlaced++;
+                piecesPlaced++;
+
+            }
+           
         }
-        
+    
     }
 
     public GameObject CreatePiece(bool isWhite, int x, int y)
