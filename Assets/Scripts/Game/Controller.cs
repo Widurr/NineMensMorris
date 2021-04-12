@@ -234,6 +234,15 @@ public class Controller : MonoBehaviour
         return false;
     }
 
+    private void DestroyAllPieces()
+    {
+        GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
+        for (int i = 0; i < allPieces.Length; i++)
+        {
+            Destroy(allPieces[i]);
+        }
+    }
+
     private bool WhoWon()
     {
         return !isWhiteTurn;
@@ -242,6 +251,7 @@ public class Controller : MonoBehaviour
     {
         if (IsWinner())
         {
+            DestroyAllPieces();
             endScreen.SetActive(true);
             if (WhoWon())
             {
