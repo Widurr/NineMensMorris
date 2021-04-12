@@ -33,6 +33,7 @@ public class Controller : MonoBehaviour
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
+    [SerializeField] private int counter;
 
     // Start is called before the first frame update
     void Start()
@@ -48,15 +49,12 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
-        if (piecesPlaced == 18)
-            gameState = GameState.moving;
     }
 
     IEnumerator PlacingStage()
     {
         while (piecesPlaced < 18)
             yield return StartCoroutine(AddPlates());
-
     }
 
     IEnumerator AddPlates()
@@ -66,7 +64,9 @@ public class Controller : MonoBehaviour
         {
                 firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
                 yield return new WaitForSeconds(0f);
-                piecesPlaced++;
+            if (piecesPlaced == 18)
+                gameState = GameState.moving;
+            piecesPlaced++;
         }
         
     }
