@@ -11,48 +11,30 @@ public class Controller : MonoBehaviour
     [SerializeField]public GameObject UIBlackTurn;
     [SerializeField] public Text endText;
 
-    private GameObject[,] positions = new GameObject[7, 7];
-    private bool[,] positionsMask = new bool[7, 7]
-    {
-        {true, false, false, true, false, false, true },
-        {false, true, false, true, false, true, false },
-        {false, false, true, true, true, false, false },
-        {true, true, true, false, true, true, true },
-        {false, false, true, true, true, false, false },
-        {false, true, false, true, false, true, false},
-        {true, false, false, true, false, false, true }
-    };
-
-    public enum GameState
-    {
-        placing,
-        moving
-    }
-    public GameState gameState
-    { get; private set; }
-
-    public bool isWhiteTurn
-    { get; set; }
+    public Game game;
 
     [SerializeField] private int piecesPlaced = 0;
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
 
+    public bool isWhiteTurn
+    { 
+        get { return game.isWhiteTurn; }
+        set { game.isWhiteTurn = value; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        gameState = GameState.placing;
-        isWhiteTurn = true;
+        game = new Game();
+        game.gameState = Game.GameState.placing;
+        game.isWhiteTurn = true;
         
 
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
         StartCoroutine(CountMovePlates());
-    }
-    private void Update()
-    {
-       
     }
 
     IEnumerator PlacingStage()
@@ -60,7 +42,7 @@ public class Controller : MonoBehaviour
         while (piecesPlaced < 18)
             yield return StartCoroutine(AddPlates());
         yield return new WaitUntil(() => movePlatesCount == 0);
-        gameState = GameState.moving;
+        game.gameState = Game.GameState.moving;
     }
 
     IEnumerator AddPlates()
@@ -68,18 +50,16 @@ public class Controller : MonoBehaviour
         {
             while (movePlatesCount < 2)
             {
-                firstStage.CreateMovePlates(isWhiteTurn, positions, positionsMask);
+                firstStage.CreateMovePlates(game);
                 yield return new WaitForSeconds(0f);
                 piecesPlaced++;
-
             }
-           
         }
-    
     }
+
     IEnumerator CountMovePlates()
     {
-        while (gameState != GameState.moving)
+        while (game.gameState != Game.GameState.moving)
         {
             movePlatesCount = GameObject.FindGameObjectsWithTag("MovePlate").Length;
             yield return new WaitForSeconds(0f);
@@ -100,120 +80,34 @@ public class Controller : MonoBehaviour
 
     public void SetPosition(GameObject obj)
     {
-        Piece p = obj.GetComponent<Piece>();
-
-        positions[p.xBoard, p.yBoard] = obj;
+        game.SetPosition(obj);
     }
     public void SetPositionEmpty(int x, int y)
     {
-        try
-        {
-            positions[x, y] = null;
-        }
-        catch(System.IndexOutOfRangeException e) { }
+        game.SetPositionEmpty(x, y);
     }
     public GameObject GetPosition(int x, int y)
     {
-        return positions[x, y];
+        return game.GetPosition(x, y);
     }
     public bool PositionOnBoard(int x, int y)
     {
-        if (x >= 0 && y >= 0 && x < 7 && y < 7)
-            if (positionsMask[x, y])
-                return true;
-        return false;
+        return game.PositionOnBoard(x, y);
     }
 
     public bool IsInMill(GameObject piece)
     {
-        if (!piece) // if null
-            return false;
-
-        var pieceScript = piece.GetComponent<Piece>();
-
-        int dx = 1;
-        int dy = 1;
-        int xBoard = pieceScript.xBoard;
-        int yBoard = pieceScript.yBoard;
-
-
-        // outer ring
-        if (xBoard == 0 || xBoard == 6)
-            dy = 3;
-        if (yBoard == 0 || yBoard == 6)
-            dx = 3;
-
-        // middle ring
-        if (xBoard == 1 || xBoard == 5)
-            dy = 2;
-        if (yBoard == 1 || yBoard == 5)
-            dx = 2;
-
-        // checking neighbours
-        GameObject n1, n2;
-        // horizontal
-        if(PositionOnBoard(xBoard - dx, yBoard))
-            n1 = GetPosition(xBoard - dx, yBoard);
-        else
-            n1 = GetPosition(xBoard + 2 * dx, yBoard);
-
-        if (PositionOnBoard(xBoard + dx, yBoard))
-            n2 = GetPosition(xBoard + dx, yBoard);
-        else
-            n2 = GetPosition(xBoard - 2 * dx, yBoard);
-
-        if (n1 && n2)
-        {
-            if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
-                    && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
-            {
-                // horizontal = true
-                return true;
-            }
-        }
-
-        // vertically
-        if (PositionOnBoard(xBoard, yBoard - dy))
-            n1 = GetPosition(xBoard, yBoard - dy);
-        else
-            n1 = GetPosition(xBoard, yBoard + 2*dy);
-
-        if (PositionOnBoard(xBoard, yBoard + dy))
-            n2 = GetPosition(xBoard, yBoard + dy);
-        else
-            n2 = GetPosition(xBoard, yBoard - 2 * dy);
-
-        if (n1 && n2)
-        {
-             if (n1.GetComponent<Piece>().isWhite == pieceScript.isWhite    // checking colours
-                && n2.GetComponent<Piece>().isWhite == pieceScript.isWhite)
-            {
-                // vertical = true
-                return true;
-            }
-        }
-        return false;
+        return game.IsInMill(piece);
     }
 
     public int piecesCount(bool isWhite)
     {
-        int counter = 0;
-        GameObject piece;
-        for (int i = 0; i < 7; i++)
-        {
-            for (int j = 0; j < 7; j++)
-            {
-                piece = GetPosition(i, j);
-                if (piece && piece.GetComponent<Piece>().isWhite == isWhite)
-                    counter++;
-            }
-        }
-        return counter;
+        return game.piecesCount(isWhite);
     }
 
     public void UITurnChange()
     {
-        if(isWhiteTurn)
+        if(game.isWhiteTurn)
         {
             UIWhiteTurn.SetActive(true);
             UIBlackTurn.SetActive(false);
@@ -224,16 +118,6 @@ public class Controller : MonoBehaviour
             UIBlackTurn.SetActive(true);
         }
     }
-
-    public bool IsWinner()
-    {
-        if(piecesCount(isWhiteTurn) == 2 && gameState == GameState.moving)
-        {
-            return true;
-        }
-        return false;
-    }
-
     private void DestroyAllPieces()
     {
         GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
@@ -242,16 +126,15 @@ public class Controller : MonoBehaviour
             Destroy(allPieces[i]);
         }
     }
-
     private bool WhoWon()
     {
-        return !isWhiteTurn;
+        return !game.isWhiteTurn;
     }
     public void DeclareWinner()
     {
-        if (IsWinner())
+        if (game.IsWinner())
         {
-            DestroyAllPieces();
+            //DestroyAllPieces();
             endScreen.SetActive(true);
             if (WhoWon())
             {

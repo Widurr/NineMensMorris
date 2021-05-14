@@ -23,24 +23,24 @@ public class CtrlFirstStage : MonoBehaviour
 
     
 
-    public void CreateMovePlates(bool isWhite, GameObject[,] positions, bool[,] positionsMask)
+    public void CreateMovePlates(Game game)
     {
         
         // Creating a piece that would be put on the board
         GameObject obj = Instantiate(controllerScript.piece, new Vector3(-100f, 0f, -1f), Quaternion.identity);
         Piece p = obj.GetComponent<Piece>();
-        p.isWhite = isWhite;
+        p.isWhite = game.isWhiteTurn;
         p.Activate();
         p.xBoard = -100;
         p.SetCoords();
 
         
         // Creating the move plates
-        for (int i = 0; i < positions.GetLength(0); i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 0; j < positions.GetLength(1); j++)
+            for (int j = 0; j < 7; j++)
             {
-                if(controllerScript.PositionOnBoard(i, j))
+                if(game.PositionOnBoard(i, j))
                     MovePlateSpawn(i, j, obj);
             }
 
