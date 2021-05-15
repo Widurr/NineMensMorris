@@ -25,6 +25,7 @@ public class Piece : MonoBehaviour
             this.GetComponent<SpriteRenderer>().color = new Vector4(0.9f, 0.9f, 0.9f, 1f);
         else
             this.GetComponent<SpriteRenderer>().color = new Vector4(0.2f, 0.2f, 0.2f, 1f);
+        
     }
 
     public void SetCoords()
@@ -105,7 +106,8 @@ public class Piece : MonoBehaviour
     private void MovePlateSpawn(int x, int y)
     {
         Controller controller = gameController.GetComponent<Controller>();
-        if(controller.PositionOnBoard(x,y))
+        FindObjectOfType<AudioManager>().Play("PieceMenu");
+        if (controller.PositionOnBoard(x,y))
         {
             GameObject p = controller.GetPosition(x, y);
 
@@ -125,6 +127,7 @@ public class Piece : MonoBehaviour
 
     public bool IsInMill()
     {
+        FindObjectOfType<AudioManager>().Play("Triple");
         return gameController.GetComponent<Controller>().IsInMill(gameObject);
     }
 }

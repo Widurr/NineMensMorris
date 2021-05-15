@@ -33,12 +33,13 @@ public class MovePlate : MonoBehaviour
             if(script.IsInMill(reference))
                 KillerPlateSpawn(!script.isWhiteTurn);
             script.isWhiteTurn = !script.isWhiteTurn;
-            
+            FindObjectOfType<AudioManager>().Play("PiecePut");
         }
         else
         {
             script.SetPositionEmpty(refPiece.xBoard, refPiece.yBoard);
             refPiece.DestroyMovePlates();
+            FindObjectOfType<AudioManager>().Play("PieceDestroyed");
             Destroy(reference);
         }
       script.DeclareWinner();

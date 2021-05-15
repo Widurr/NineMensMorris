@@ -33,7 +33,7 @@ public class CtrlFirstStage : MonoBehaviour
         p.Activate();
         p.xBoard = -100;
         p.SetCoords();
-
+        FindObjectOfType<AudioManager>().Play("PieceMenu");
         
         // Creating the move plates
         for (int i = 0; i < 7; i++)

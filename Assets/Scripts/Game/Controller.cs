@@ -138,10 +138,14 @@ public class Controller : MonoBehaviour
             endScreen.SetActive(true);
             if (WhoWon())
             {
-                endText.text = "White won!";
+                endScreen.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                FindObjectOfType<AudioManager>().Play("WhiteWin");
             }
             else
-                endText.text = "Black won!";
+            {
+                endScreen.transform.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
+                FindObjectOfType<AudioManager>().Play("BlackWin");
+            }
         }
         else
             UITurnChange();
