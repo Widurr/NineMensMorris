@@ -953,13 +953,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3828518543708307041, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3828518543708307041, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 825049005}
     - target: {fileID: 3828518543708307041, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 825049002}
+    - target: {fileID: 3828518543708307041, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PauseTheGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 3828518543708307041, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: GetPieces
       objectReference: {fileID: 0}
     - target: {fileID: 3828518543708307042, guid: 91396a8f363a62f4ab788b6e3d6d5d99,
         type: 3}
@@ -1100,6 +1115,19 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 814604020}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &825049002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825049000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c80abfe01176b49891f0b1c83515f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnInfo: 0
 --- !u!114 &825049005
 MonoBehaviour:
   m_ObjectHideFlags: 0
