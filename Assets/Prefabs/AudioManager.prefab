@@ -46,49 +46,34 @@ MonoBehaviour:
   sounds:
   - name: PlayTheme
     clip: {fileID: 8300000, guid: 078a7c7d1121afd4fa65fd8e1e66d322, type: 3}
-    volume: 1
-    pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: MenuTheme
     clip: {fileID: 8300000, guid: d9fbb45a3ae60d241a54895f865547c2, type: 3}
-    volume: 1
-    pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: PieceMenu
     clip: {fileID: 8300000, guid: a87017634510a4c4e9bcbe527e0f39b8, type: 3}
-    volume: 1
-    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: PiecePut
     clip: {fileID: 8300000, guid: 39fa01a73829f8749a5f001010d6f4ac, type: 3}
-    volume: 1
-    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: Triple
     clip: {fileID: 8300000, guid: 6172539e007cef0498715c25d9626c86, type: 3}
-    volume: 1
-    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: PieceDestroyed
     clip: {fileID: 8300000, guid: 2ecc2c0d7fb6f774fb04fc7bebed4139, type: 3}
-    volume: 1
-    pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: BlackWin
     clip: {fileID: 8300000, guid: 3aacfde63002a774bb747ccf84fc1cd6, type: 3}
-    volume: 1
-    pitch: 1
     loop: 1
     source: {fileID: 0}
   - name: WhiteWin
     clip: {fileID: 8300000, guid: bd3d909c1daaf774f95fbc34ac337853, type: 3}
-    volume: 1
-    pitch: 1
     loop: 1
     source: {fileID: 0}
+  audiomix: {fileID: 24300002, guid: d3607d53099dd334c85a797348288d4a, type: 2}
