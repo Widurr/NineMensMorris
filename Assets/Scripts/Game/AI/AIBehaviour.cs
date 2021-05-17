@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 public class AIBehaviour : MonoBehaviour
 {
-    Game game;
+    //Game game;
     Move move = null;
+
+    public int difficulty { set; get; } = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject.Find("Controller").GetComponent<Controller>().getGame();
+        //GameObject.Find("Controller").GetComponent<Controller>().getGame();
     }
 
-
-    private Move CalculateMove(int difficulty)
+    public Move CalculateMove(Game game)
     {
         //Move move = null;
         AI ai = new AI(difficulty);

@@ -15,7 +15,7 @@ public class Game
         {false, true, false, true, false, true, false},
         {true, false, false, true, false, false, true }
     };
-
+    public GameObject pieceReference { get; set; } = null;
 
     public enum GameState
     {
@@ -195,17 +195,29 @@ public class Game
     public void ApplyMove(Move move)
     {
         // find piece
-        GameObject p = positions[move.fromX, move.fromY];
-        Piece ps = p.GetComponent<Piece>();
+        Piece ps;
+        GameObject p;
+        if (move.fromX == -1 || move.fromY == -1)
+        {
+            p = pieceReference;
+            pieceReference = null;
+        }
+        else
+        {
+            p = positions[move.fromX, move.fromY];
+        }
+        ps = p.GetComponent<Piece>();
 
         ps.xBoard = move.toX;
         ps.yBoard = move.toY;
+
+        ps.SetCoords();
 
         SetPosition(p);
         SetPositionEmpty(move.fromX, move.fromY);
 
         // Destroy
-        if(move.removeX == -1 || move.removeY == -1)
+        if(move.removeX != -1 && move.removeY != -1)
         {
             Object.Destroy(positions[move.removeX, move.removeY]);
             SetPositionEmpty(move.removeX, move.removeY);

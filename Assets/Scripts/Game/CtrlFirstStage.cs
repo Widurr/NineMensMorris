@@ -34,16 +34,26 @@ public class CtrlFirstStage : MonoBehaviour
         p.xBoard = -100;
         p.SetCoords();
 
-        
-        // Creating the move plates
-        for (int i = 0; i < 7; i++)
+        if (controllerScript.difficulty == 0 || game.isWhiteTurn == controllerScript.isPlayerWhite)    // No AI
         {
-            for (int j = 0; j < 7; j++)
+            // Creating the move plates
+            for (int i = 0; i < 7; i++)
             {
-                if(game.PositionOnBoard(i, j))
-                    MovePlateSpawn(i, j, obj);
-            }
+                for (int j = 0; j < 7; j++)
+                {
+                    if (game.PositionOnBoard(i, j))
+                        MovePlateSpawn(i, j, obj);
+                }
 
+            }
+        }
+        else // AI
+        {
+            AIBehaviour ai = controllerScript.opponent;
+            Move move = ai.CalculateMove(game);
+            game.pieceReference = obj;
+            game.ApplyMove(move);
+            game.isWhiteTurn = !game.isWhiteTurn;
         }
     }
 

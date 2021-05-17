@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     public GameObject piece;
+    public AIBehaviour opponent;
     [SerializeField]public GameObject endScreen;
     [SerializeField]public GameObject UIWhiteTurn;
     [SerializeField]public GameObject UIBlackTurn;
@@ -14,7 +15,8 @@ public class Controller : MonoBehaviour
     private Game game;
     public Game getGame() { return game; }
 
-    private bool isPlayerWhite = true;
+    public bool isPlayerWhite { get; private set; } = true;
+    public int difficulty = 1;
 
     //[SerializeField] private int piecesPlaced = 0;
     public int piecesPlaced { get { return game.whitePiecesPlaced + game.blackPiecesPlaced; } }
@@ -34,7 +36,9 @@ public class Controller : MonoBehaviour
         game = new Game();
         game.gameState = Game.GameState.placing;
         game.isWhiteTurn = true;
-        
+
+        opponent = GameObject.FindGameObjectWithTag("AI").GetComponent<AIBehaviour>();
+        opponent.difficulty = difficulty;
 
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());

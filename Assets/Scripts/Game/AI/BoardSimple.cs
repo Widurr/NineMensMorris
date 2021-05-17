@@ -216,16 +216,16 @@ public class BoardSimple
 
     private bool PositionOnBoard(int x, int y)
     {
-        if (positions[x, y] == -1)
-            return false;
         if (x < 0 || x > 6 || y < 0 || y > 6)
+            return false;
+        if (positions[x, y] == -1)
             return false;
         return true;
     }
 
     public bool IsValidFromTo(Move move)
     {
-        if (move.fromX == move.toX || move.fromY == move.toY)
+        if (move.fromX == move.toX && move.fromY == move.toY)
             return false;
         if (move.toX < 0 || move.toX >= 7)
             return false;
@@ -235,22 +235,17 @@ public class BoardSimple
             return false;
         if (move.fromY < -1 || move.fromY >= 7)
             return false;
+
         if (positions[move.toX, move.toY] != 0)
             return false;
-        if (move.fromX == -1 && AvailableStones[CurrentPlayer - 1] == 0)
+        if ((move.fromX == -1 || move.fromY == -1) && AvailableStones[CurrentPlayer - 1] == 0)
             return false;
-        if (move.fromY == -1 && AvailableStones[CurrentPlayer - 1] == 0)
+        if ((move.fromX != -1 && move.fromY != -1) && AvailableStones[CurrentPlayer - 1] != 0)
             return false;
-        if (move.fromX != -1 && AvailableStones[CurrentPlayer - 1] != 0)
-            return false;
-        if (move.fromY != -1 && AvailableStones[CurrentPlayer - 1] != 0)
-            return false;
-        if (move.fromX != -1 && positions[move.fromX, move.fromY] != CurrentPlayer)
-            return false;
-        if (move.fromY != -1 && positions[move.fromX, move.fromY] != CurrentPlayer)
+        if ((move.fromX != -1 && move.fromY != -1) && positions[move.fromX, move.fromY] != CurrentPlayer)
             return false;
 
-        if ((move.fromX != 1 && move.fromY != 1)
+        if ((move.fromX != -1 && move.fromY != -1)
             && StonesOnBoard[CurrentPlayer - 1] > 3
             && !IsAdjacent(move.fromX, move.fromY, move.toX, move.toY))
             return false;
@@ -269,9 +264,9 @@ public class BoardSimple
         if (!IsValidFromTo(move))
             return false;
 
-        if (move.removeX < -1 || move.removeX > positions.Length)
+        if (move.removeX < -1 || move.removeX > 7)
             return false;
-        if (move.removeY < -1 || move.removeY > positions.Length)
+        if (move.removeY < -1 || move.removeY > 7)
             return false;
 
         if ((move.removeX != -1 && move.removeY != -1) && (positions[move.removeX, move.removeY] != OtherPlayer))
@@ -283,7 +278,11 @@ public class BoardSimple
     public void Move(Move move)
     {
         if (!IsValid(move))
+        {
+            Debug.Log("" + move.fromX + move.fromY + move.toX + move.toY + move.removeX + move.removeY);
+            Debug.Log(AvailableStones[CurrentPlayer - 1]);
             throw new InvalidOperationException(nameof(move));
+        }
 
         positions[move.toX, move.toY] = CurrentPlayer;
 

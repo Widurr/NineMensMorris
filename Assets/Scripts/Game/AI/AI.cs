@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 public class AI
 {
     int depth;
     private Random random = new Random();
 
+    private Stopwatch stopwatch = new Stopwatch();
+    private int timeLimit = 5000;
+
     public AI(int difficulty)
     {
         switch (difficulty)
         {
             case 1:
-                depth = 4;
+                depth = 2;
                 break;
             case 2:
-                depth = 5;
+                depth = 3;
                 break;
             case 3:
-                depth = 6;
+                depth = 4;
                 break;
             default:
-                depth = 4;
+                depth = 2;
                 break;
         }
     }
@@ -39,9 +43,9 @@ public class AI
         var bestResult = float.NegativeInfinity;
         var bestMove = nextStates[0].LastMove;
 
-        //stopwatch.Start();
+        stopwatch.Start();
 
-        for (int lookAhead = depth/2; lookAhead <= depth; lookAhead++)
+        for (int lookAhead = 3; lookAhead <= 6; lookAhead++)
         {
             Parallel.For(0, nextStates.Length, (i) =>
             {
@@ -49,7 +53,7 @@ public class AI
 
                 lock (locker)
                 {
-                    if (result >= bestResult)
+                    if (result >= bestResult && stopwatch.ElapsedMilliseconds < timeLimit)
                     {
                         bestResult = result;
                         bestMove = nextStates[i].LastMove;
@@ -63,7 +67,7 @@ public class AI
 
     private float AlphaBeta(BoardSimple board, int depth, float alpha, float beta, int maximizingPlayer)
     {
-        if (depth == 0 || board.IsGameOver)
+        if (depth == 0 || board.IsGameOver || stopwatch.ElapsedMilliseconds >= timeLimit)
             return CalculateRating(board, maximizingPlayer);
 
         if (board.CurrentPlayer == maximizingPlayer)
