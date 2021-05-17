@@ -134,7 +134,7 @@ public class Controller : MonoBehaviour
     {
         if (game.IsWinner())
         {
-            //DestroyAllPieces();
+            DestroyAllPieces();
             endScreen.SetActive(true);
             if (WhoWon())
             {
@@ -149,6 +149,16 @@ public class Controller : MonoBehaviour
         }
         else
             UITurnChange();
+    }
+    public void LoadData()
+    {
+        GameData gameData = SaveSystem.LoadGame();
+        DestroyAllPieces();
+        gameObject.GetComponent<Controller>().isWhiteTurn = gameData.turnInfo;
+        foreach(PieceData piece in gameData.pieces)
+        {
+            //Here you should instantiate all pieces
+        }
     }
    
 }

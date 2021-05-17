@@ -5,6 +5,7 @@ using UnityEngine;
 public class PieceData
 {
     public float[] position;
+    public bool isWhite;
 
     public PieceData(GameObject piece)
     {
@@ -12,5 +13,6 @@ public class PieceData
         position[0] = piece.transform.position.x;
         position[1] = piece.transform.position.y;
         position[2] = piece.transform.position.z;
+        isWhite = piece.GetComponent<Piece>().isWhite;
     }
 }

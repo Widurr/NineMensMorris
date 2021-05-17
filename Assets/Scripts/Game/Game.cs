@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Game
 {
+    
     private GameObject[,] positions = new GameObject[7, 7];
     private bool[,] positionsMask = new bool[7, 7]
     {

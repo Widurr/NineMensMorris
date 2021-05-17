@@ -12,14 +12,9 @@ public class CtrlFirstStage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      //  controllerScript = GetComponent<Controller>();
+     // controllerScript = GetComponent<Controller>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     
 

@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public static bool gameIsPaused = false;
 
-    public RectTransform costam;
+    GameObject controller;
+
+    string[] scriptsToDisable = new string[] { "Piece", "MovePlate" };
 
     public GameObject pauseMenuUI;
 
-    GameObject helper;
-    // Update is called once per frame
+    private void Awake()
+    {
+        controller = GameObject.FindGameObjectWithTag("GameController");
+    }
     public void PauseTheGame()
     {
-        if (GameIsPaused)
+        if (gameIsPaused)
         {
             Resume();
         }
@@ -26,16 +30,34 @@ public class PauseMenu : MonoBehaviour
 
     void Resume()
     {
-        GameIsPaused = false;
+        DisableScripts();
+        gameIsPaused = false;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
     }
 
     void Pause()
     {
-        GameIsPaused = true;
+        DisableScripts();
+        gameIsPaused = true;
         pauseMenuUI.SetActive(true);
         pauseMenuUI.transform.SetAsLastSibling();
         Time.timeScale = 0f;
+        SaveSystem.GetPieces();
+        
     }
+
+    void DisableScripts()
+    {
+        for (int i = 0; i < scriptsToDisable.Length; i++)
+        {
+            var objects = GameObject.FindGameObjectsWithTag(scriptsToDisable[i]);
+
+            foreach (GameObject piece in objects)
+            {
+                piece.GetComponent<CircleCollider2D>().enabled = gameIsPaused;
+            }
+        }
+    }
+    
 }
