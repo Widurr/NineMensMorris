@@ -33,7 +33,17 @@ public class MovePlate : MonoBehaviour
             if(script.IsInMill(reference))
                 KillerPlateSpawn(!script.isWhiteTurn);
             script.isWhiteTurn = !script.isWhiteTurn;
-            
+
+            // AI
+            var game = script.getGame();
+            if (game.gameState == Game.GameState.moving && script.difficulty > 0 && script.isWhiteTurn != script.isPlayerWhite)
+            {
+                AIBehaviour ai = script.opponent;
+                
+                Move move = ai.CalculateMove(game);
+                game.ApplyMove(move);
+                script.isWhiteTurn = !script.isWhiteTurn;
+            }
         }
         else
         {

@@ -49,16 +49,19 @@ public class Piece : MonoBehaviour
     void OnMouseUp()
     {
         Controller ctrlScript = gameController.GetComponent<Controller>();
-        if (ctrlScript.getGame().gameState == Game.GameState.moving)
+        if (ctrlScript.difficulty == 0 || ctrlScript.isPlayerWhite == ctrlScript.isWhiteTurn)
         {
-            // checking if there's no deleting happening
-            var mp = GameObject.FindGameObjectWithTag("MovePlate");
-            if (!mp || !mp.GetComponent<MovePlate>().isKillerPlate)
+            if (ctrlScript.getGame().gameState == Game.GameState.moving)
             {
-                DestroyMovePlates();
-                if (ctrlScript.isWhiteTurn == isWhite)
+                // checking if there's no deleting happening
+                var mp = GameObject.FindGameObjectWithTag("MovePlate");
+                if (!mp || !mp.GetComponent<MovePlate>().isKillerPlate)
                 {
-                    InitiateMovePlates();
+                    DestroyMovePlates();
+                    if (ctrlScript.isWhiteTurn == isWhite)
+                    {
+                        InitiateMovePlates();
+                    }
                 }
             }
         }

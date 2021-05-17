@@ -24,6 +24,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
 
+    public int ppw, ppb;
+
     public bool isWhiteTurn
     { 
         get { return game.isWhiteTurn; }
@@ -43,6 +45,12 @@ public class Controller : MonoBehaviour
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
         StartCoroutine(CountMovePlates());
+    }
+
+    private void Update()
+    {
+        ppw = game.whitePiecesPlaced;
+        ppb = game.blackPiecesPlaced;
     }
 
     IEnumerator PlacingStage()
