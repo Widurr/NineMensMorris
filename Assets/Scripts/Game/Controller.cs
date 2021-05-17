@@ -11,9 +11,13 @@ public class Controller : MonoBehaviour
     [SerializeField]public GameObject UIBlackTurn;
     [SerializeField] public Text endText;
 
-    public Game game;
+    private Game game;
+    public Game getGame() { return game; }
 
-    [SerializeField] private int piecesPlaced = 0;
+    private bool isPlayerWhite = true;
+
+    //[SerializeField] private int piecesPlaced = 0;
+    public int piecesPlaced { get { return game.whitePiecesPlaced + game.blackPiecesPlaced; } }
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
@@ -52,7 +56,11 @@ public class Controller : MonoBehaviour
             {
                 firstStage.CreateMovePlates(game);
                 yield return new WaitForSeconds(0f);
-                piecesPlaced++;
+                //piecesPlaced++;
+                if (isWhiteTurn)
+                    game.whitePiecesPlaced++;
+                else
+                    game.blackPiecesPlaced++;
             }
         }
     }

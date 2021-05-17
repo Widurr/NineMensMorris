@@ -49,7 +49,7 @@ public class Piece : MonoBehaviour
     void OnMouseUp()
     {
         Controller ctrlScript = gameController.GetComponent<Controller>();
-        if (ctrlScript.game.gameState == Game.GameState.moving)
+        if (ctrlScript.getGame().gameState == Game.GameState.moving)
         {
             // checking if there's no deleting happening
             var mp = GameObject.FindGameObjectWithTag("MovePlate");
