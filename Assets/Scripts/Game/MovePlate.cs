@@ -28,6 +28,14 @@ public class MovePlate : MonoBehaviour
             refPiece.SetCoords();
 
             script.SetPosition(reference);
+            var game = script.getGame();
+            if(game.gameState == Game.GameState.placing)
+            {
+                if (game.isWhiteTurn)
+                    game.whitePiecesPlaced++;
+                else
+                    game.blackPiecesPlaced++;
+            }
 
             refPiece.DestroyMovePlates();
             if(script.IsInMill(reference))
@@ -35,7 +43,9 @@ public class MovePlate : MonoBehaviour
             script.isWhiteTurn = !script.isWhiteTurn;
             FindObjectOfType<AudioManager>().Play("PiecePut");
 
+
             // AI
+            /*
             var game = script.getGame();
             if (game.gameState == Game.GameState.moving && script.difficulty > 0 && script.isWhiteTurn != script.isPlayerWhite)
             {
@@ -45,6 +55,7 @@ public class MovePlate : MonoBehaviour
                 game.ApplyMove(move);
                 script.isWhiteTurn = !script.isWhiteTurn;
             }
+            */
         }
         else
         {

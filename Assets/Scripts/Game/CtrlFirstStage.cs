@@ -50,6 +50,13 @@ public class CtrlFirstStage : MonoBehaviour
             Move move = ai.CalculateMove(game);
             game.pieceReference = obj;
             game.ApplyMove(move);
+            if (game.gameState == Game.GameState.placing)
+            {
+                if (game.isWhiteTurn)
+                    game.whitePiecesPlaced++;
+                else
+                    game.blackPiecesPlaced++;
+            }
             game.isWhiteTurn = !game.isWhiteTurn;
         }
     }

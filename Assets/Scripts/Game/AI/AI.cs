@@ -75,7 +75,7 @@ public class AI
         */
         Parallel.For(0, nextStates.Length, (i) =>
         {
-            var result = AlphaBeta(nextStates[i], 3, int.MinValue, int.MaxValue, board.CurrentPlayer);
+            var result = AlphaBeta(nextStates[i], 2, int.MinValue, int.MaxValue, board.CurrentPlayer);
 
 
             lock (locker)
