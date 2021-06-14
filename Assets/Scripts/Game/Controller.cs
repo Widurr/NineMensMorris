@@ -27,11 +27,14 @@ public class Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        game = new Game();
-        game.gameState = Game.GameState.placing;
-        game.isWhiteTurn = true;
-        
-
+        if (game == null)
+        {
+            game = new Game();
+            game.gameState = Game.GameState.placing;
+            game.isWhiteTurn = true;
+        }
+        SavingSystem.game.Add(game);
+        piecesPlaced = FindObjectsOfType<Piece>().Length;
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
         StartCoroutine(CountMovePlates());
@@ -150,15 +153,6 @@ public class Controller : MonoBehaviour
         else
             UITurnChange();
     }
-    public void LoadData()
-    {
-        GameData gameData = SaveSystem.LoadGame();
-        DestroyAllPieces();
-        gameObject.GetComponent<Controller>().isWhiteTurn = gameData.turnInfo;
-        foreach(PieceData piece in gameData.pieces)
-        {
-            //Here you should instantiate all pieces
-        }
-    }
+    
    
 }

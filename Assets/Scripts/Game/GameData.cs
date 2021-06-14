@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData: MonoBehaviour
+[System.Serializable]
+public class GameData
 {
-    public bool turnInfo;
-    public PieceData[] pieces; 
-    
-    public GameData(bool turnInfo, PieceData[] pieces)
+    public enum GameState
     {
-        this.turnInfo = turnInfo;
-        this.pieces = pieces;
+        placing,
+        moving
     }
-
-    
+    public bool isWhiteTurn;
+    public GameState gameState;
+    public GameData(Game game)
+    {
+        isWhiteTurn = game.isWhiteTurn;
+        gameState = (GameState)game.gameState;
+    }
 }

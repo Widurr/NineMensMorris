@@ -43,7 +43,6 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         pauseMenuUI.transform.SetAsLastSibling();
         Time.timeScale = 0f;
-        SaveSystem.GetPieces();
         
     }
 

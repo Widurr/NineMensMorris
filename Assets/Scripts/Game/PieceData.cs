@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PieceData
 {
     public float[] position;
     public bool isWhite;
 
-    public PieceData(GameObject piece)
+    public PieceData(Piece piece)
     {
         position = new float[3];
         position[0] = piece.transform.position.x;

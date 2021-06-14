@@ -16,6 +16,16 @@ public class Piece : MonoBehaviour
     public int yBoard
     { get; set; }
 
+
+    private void Awake()
+    {
+        SavingSystem.pieces.Add(this);
+    }
+    private void OnDestroy()
+    {
+        SavingSystem.pieces.Remove(this);
+    }
+
     public void Activate()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController");

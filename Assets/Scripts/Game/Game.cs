@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Game
 {
     
-    private GameObject[,] positions = new GameObject[7, 7];
-    private bool[,] positionsMask = new bool[7, 7]
+    public GameObject[,] positions = new GameObject[7, 7];
+    public bool[,] positionsMask = new bool[7, 7]
     {
         {true, false, false, true, false, false, true },
         {false, true, false, true, false, true, false },
@@ -17,7 +18,7 @@ public class Game
         {true, false, false, true, false, false, true }
     };
 
-
+    
     public enum GameState
     {
         placing,
