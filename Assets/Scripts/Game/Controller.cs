@@ -42,7 +42,7 @@ public class Controller : MonoBehaviour
             game.isWhiteTurn = true;
         }
         SavingSystem.game.Add(game);
-        piecesPlaced = FindObjectsOfType<Piece>().Length;
+        //piecesPlaced = FindObjectsOfType<Piece>().Length;
        
 
         opponent = GameObject.FindGameObjectWithTag("AI").GetComponent<AIBehaviour>();
@@ -57,6 +57,11 @@ public class Controller : MonoBehaviour
     {
         ppw = game.whitePiecesPlaced;
         ppb = game.blackPiecesPlaced;
+
+        if(game.gameState == Game.GameState.moving && isWhiteTurn != isPlayerWhite)
+        {
+
+        }
     }
 
     IEnumerator PlacingStage()

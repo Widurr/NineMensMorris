@@ -70,7 +70,7 @@ public class SavingSystem : MonoBehaviour
             FileStream gameStream = new FileStream(gamePath, FileMode.Open);
             GameData gameData = formatter.Deserialize(gameStream) as GameData;
             gameStream.Close();
-            Game game = FindObjectOfType<Controller>().game;
+            Game game = FindObjectOfType<Controller>().getGame();
             game.isWhiteTurn = gameData.isWhiteTurn;
            // game.positions = gameData.positions;
           //  game.positionsMask = gameData.positionsMask;
