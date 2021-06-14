@@ -58,7 +58,7 @@ public class Controller : MonoBehaviour
         ppw = game.whitePiecesPlaced;
         ppb = game.blackPiecesPlaced;
 
-        /*
+        ///*
         if(game.gameState == Game.GameState.moving && isWhiteTurn != isPlayerWhite)
         {
             AIBehaviour ai = opponent;
@@ -66,7 +66,7 @@ public class Controller : MonoBehaviour
             game.ApplyMove(move);
             game.isWhiteTurn = !game.isWhiteTurn;
         }
-        */
+        //*/
     }
 
     IEnumerator PlacingStage()
@@ -84,13 +84,6 @@ public class Controller : MonoBehaviour
             {
                 firstStage.CreateMovePlates(game);
                 yield return new WaitForSeconds(0f);
-                //piecesPlaced++;
-                /*
-                if (isWhiteTurn)
-                    game.whitePiecesPlaced++;
-                else
-                    game.blackPiecesPlaced++;
-                */
             }
         }
     }

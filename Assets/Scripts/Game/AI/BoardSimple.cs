@@ -329,7 +329,9 @@ public class BoardSimple
     private bool IsAdjacent(int x1, int y1, int x2, int y2)
     {
         return ((x2 - x1 == deltaX(y1) || x2 - x1 == -deltaX(y1))
-            && (y2 - y1 == deltaY(x1) || y2 - y1 == -deltaY(x1)));
+            && (y2 - y1 == deltaY(x1) || y2 - y1 == -deltaY(x1))
+            && ((x2 - x1 == deltaX(y2) || x2 - x1 == -deltaX(y2)))
+            && (y2 - y1 == deltaY(x2) || y2 - y1 == -deltaY(x2)));
     }
 
     public bool IsValid(Move move)
