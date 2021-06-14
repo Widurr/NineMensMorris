@@ -44,7 +44,79 @@ public class BoardSimple
     }
     private BoardSimple() { }
 
-    private IEnumerable<Move> CalculateAvailableMoves()
+    /*
+    private Move[] CalculateAvailableMoves()
+    {
+        LinkedList<Move> list = new LinkedList<Move>();
+        for (int toX = 0; toX < 7; toX++)
+        {
+            for (int toY = 0; toY < 7; toY++)
+            {
+                if (positions[toX, toY] != 0)
+                    continue;
+
+                for (int fromX = 0; fromX < 7; fromX++)
+                {
+                    for (int fromY = -1; fromY < 7; fromY++)
+                    {
+                        if(fromY == -1)
+                        {
+                            if (AvailableStones[CurrentPlayer - 1] == 0) // gameState == moving
+                                continue;
+                        }
+                        else
+                        {
+                            if (AvailableStones[CurrentPlayer - 1] != 0) // gameState == placing
+                                continue;
+
+                            if (positions[fromX, fromY] != CurrentPlayer)
+                            {
+                                continue;
+                            }
+
+                            if ((StonesOnBoard[CurrentPlayer - 1] + AvailableStones[CurrentPlayer - 1]) > 3 && !IsAdjacent(fromX, fromY, toX, toY))
+                                continue;
+                        }
+
+                        if(WillHaveMill(fromX, fromY, toX, toY))
+                        {
+                            bool canRemoveStone = false;
+
+                            for (int removeX = 0; removeX < 7; removeX++)
+                            {
+                                for (int removeY = 0; removeY < 7; removeY++)
+                                {
+                                    if (positions[removeX, removeY] != OtherPlayer)
+                                        continue;
+
+                                    if (isInMill(removeX, removeY))
+                                        continue;
+
+                                    canRemoveStone = true;
+                                    list.AddFirst(new Move { toX = toX, toY = toY, fromX = fromX, fromY = fromY, removeX = removeX, removeY = removeY });
+                                }
+                            }
+
+                            if (!canRemoveStone)
+                            {
+                                list.AddLast(new Move { toX = toX, toY = toY, fromX = fromX, fromY = fromY, removeX = -1, removeY = -1 });
+                            }
+                        }
+                        else
+                        {
+                            //yield return new Move { toX = toX, toY = toY, fromX = fromX, fromY = fromY, removeX = -1, removeY = -1 };
+                            list.AddLast(new Move { toX = toX, toY = toY, fromX = fromX, fromY = fromY, removeX = -1, removeY = -1 });
+                        }
+                    }
+                }
+            }
+        }
+        return list.ToArray();
+    }
+    */
+
+    
+     private IEnumerable<Move> CalculateAvailableMoves()
     {
         for (int toX = 0; toX < 7; toX++)
         {
@@ -109,6 +181,7 @@ public class BoardSimple
             }
         }
     }
+    
 
     private void UpdateMoves()
     {
@@ -137,7 +210,7 @@ public class BoardSimple
     {
         get
         {
-            foreach (var move in AvailableMoves.ToList())
+            foreach (var move in AvailableMoves)
             {
                 var newGame = Clone();
                 newGame.Move(move);
@@ -277,12 +350,14 @@ public class BoardSimple
 
     public void Move(Move move)
     {
+        /*
         if (!IsValid(move))
         {
             Debug.Log("" + move.fromX + move.fromY + move.toX + move.toY + move.removeX + move.removeY);
             Debug.Log(AvailableStones[CurrentPlayer - 1]);
             throw new InvalidOperationException(nameof(move));
         }
+        */
 
         positions[move.toX, move.toY] = CurrentPlayer;
 
@@ -299,7 +374,7 @@ public class BoardSimple
 
         LastMove = move;
         CurrentPlayer = OtherPlayer;
-        AvailableMoves = CalculateAvailableMoves().ToArray();
+        UpdateMoves();
     }
 
     public BoardSimple Clone()
@@ -316,5 +391,25 @@ public class BoardSimple
         Array.Copy(AvailableMoves, clone.AvailableMoves, AvailableMoves.Length);
 
         return clone;
+    }
+
+    public ulong getKey()
+    {
+        ulong key = (uint)AvailableStones[0];
+        key <<= 4;
+        key |= (uint)AvailableStones[1];
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                if(positions[i,j] != -1)
+                {
+                    key <<= 2;
+                    key |= (uint)positions[i, j];
+                }
+            }
+        }
+
+        return key;
     }
 }
