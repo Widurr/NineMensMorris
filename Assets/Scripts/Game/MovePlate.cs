@@ -34,6 +34,17 @@ public class MovePlate : MonoBehaviour
                 KillerPlateSpawn(!script.isWhiteTurn);
             script.isWhiteTurn = !script.isWhiteTurn;
             FindObjectOfType<AudioManager>().Play("PiecePut");
+
+            // AI
+            var game = script.getGame();
+            if (game.gameState == Game.GameState.moving && script.difficulty > 0 && script.isWhiteTurn != script.isPlayerWhite)
+            {
+                AIBehaviour ai = script.opponent;
+                
+                Move move = ai.CalculateMove(game);
+                game.ApplyMove(move);
+                script.isWhiteTurn = !script.isWhiteTurn;
+            }
         }
         else
         {

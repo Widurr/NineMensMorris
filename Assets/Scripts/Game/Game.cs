@@ -1,13 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class Game
 {
-    
-    public GameObject[,] positions = new GameObject[7, 7];
-    public bool[,] positionsMask = new bool[7, 7]
+    private GameObject[,] positions = new GameObject[7, 7];
+    private static bool[,] positionsMask { get; } = new bool[7, 7]
     {
         {true, false, false, true, false, false, true },
         {false, true, false, true, false, true, false },
@@ -17,8 +16,8 @@ public class Game
         {false, true, false, true, false, true, false},
         {true, false, false, true, false, false, true }
     };
+    public GameObject pieceReference { get; set; } = null;
 
-    
     public enum GameState
     {
         placing,
@@ -29,6 +28,9 @@ public class Game
 
     public bool isWhiteTurn
     { get; set; }
+
+    public int whitePiecesPlaced { get; set; } = 0;
+    public int blackPiecesPlaced { get; set; } = 0;
 
     public bool IsInMill(GameObject piece)
     {
@@ -116,10 +118,25 @@ public class Game
         }
         return counter;
     }
+    public int piecesCount()
+    {
+        int counter = 0;
+        GameObject piece;
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                piece = GetPosition(i, j);
+                if (piece != null)
+                    counter++;
+            }
+        }
+        return counter;
+    }
 
     public bool IsWinner()
     {
-        if (piecesCount(isWhiteTurn) == 2 && gameState == GameState.moving)
+        if (piecesCount(isWhiteTurn) <= 2 && gameState == GameState.moving)
         {
             return true;
         }
@@ -151,5 +168,60 @@ public class Game
     public GameObject GetPosition(int x, int y)
     {
         return positions[x, y];
+    }
+
+    public BoardSimple Simplyfy()
+    {
+        var pos = new int[7, 7];
+        for (int i = 0; i < 7; i++)
+        {
+            for (int j = 0; j < 7; j++)
+            {
+                if (positionsMask[i, j] == false)
+                    pos[i, j] = -1;
+                else if (positions[i, j] == null)
+                    pos[i, j] = 0;
+                else if (positions[i, j].GetComponent<Piece>().isWhite) // white
+                    pos[i, j] = 2;
+                else if (!positions[i, j].GetComponent<Piece>().isWhite) // black
+                    pos[i, j] = 1;
+            }
+        }
+
+        BoardSimple bs = new BoardSimple(pos, whitePiecesPlaced, blackPiecesPlaced, isWhiteTurn); //
+        
+        return bs;
+    }
+
+    public void ApplyMove(Move move)
+    {
+        // find piece
+        Piece ps;
+        GameObject p;
+        if (move.fromX == -1 || move.fromY == -1)
+        {
+            p = pieceReference;
+            pieceReference = null;
+        }
+        else
+        {
+            p = positions[move.fromX, move.fromY];
+        }
+        ps = p.GetComponent<Piece>();
+
+        ps.xBoard = move.toX;
+        ps.yBoard = move.toY;
+
+        ps.SetCoords();
+
+        SetPosition(p);
+        SetPositionEmpty(move.fromX, move.fromY);
+
+        // Destroy
+        if(move.removeX != -1 && move.removeY != -1)
+        {
+            Object.Destroy(positions[move.removeX, move.removeY]);
+            SetPositionEmpty(move.removeX, move.removeY);
+        }
     }
 }

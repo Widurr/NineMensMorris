@@ -6,17 +6,25 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     public GameObject piece;
+    public AIBehaviour opponent;
     [SerializeField]public GameObject endScreen;
     [SerializeField]public GameObject UIWhiteTurn;
     [SerializeField]public GameObject UIBlackTurn;
     [SerializeField] public Text endText;
 
-    public Game game;
+    private Game game;
+    public Game getGame() { return game; }
 
-    [SerializeField] private int piecesPlaced = 0;
+    public bool isPlayerWhite { get; private set; } = true;
+    public int difficulty = 1;
+
+    //[SerializeField] private int piecesPlaced = 0;
+    public int piecesPlaced { get { return game.whitePiecesPlaced + game.blackPiecesPlaced; } }
     private bool gameOver = false;
     [SerializeField] private int movePlatesCount;
     CtrlFirstStage firstStage;
+
+    public int ppw, ppb;
 
     public bool isWhiteTurn
     { 
@@ -35,9 +43,20 @@ public class Controller : MonoBehaviour
         }
         SavingSystem.game.Add(game);
         piecesPlaced = FindObjectsOfType<Piece>().Length;
+       
+
+        opponent = GameObject.FindGameObjectWithTag("AI").GetComponent<AIBehaviour>();
+        opponent.difficulty = difficulty;
+
         firstStage = GetComponent<CtrlFirstStage>();
         StartCoroutine(PlacingStage());
         StartCoroutine(CountMovePlates());
+    }
+
+    private void Update()
+    {
+        ppw = game.whitePiecesPlaced;
+        ppb = game.blackPiecesPlaced;
     }
 
     IEnumerator PlacingStage()
@@ -55,7 +74,11 @@ public class Controller : MonoBehaviour
             {
                 firstStage.CreateMovePlates(game);
                 yield return new WaitForSeconds(0f);
-                piecesPlaced++;
+                //piecesPlaced++;
+                if (isWhiteTurn)
+                    game.whitePiecesPlaced++;
+                else
+                    game.blackPiecesPlaced++;
             }
         }
     }

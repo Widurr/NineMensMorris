@@ -30,15 +30,27 @@ public class CtrlFirstStage : MonoBehaviour
         p.SetCoords();
         FindObjectOfType<AudioManager>().Play("PieceMenu");
         
-        // Creating the move plates
-        for (int i = 0; i < 7; i++)
-        {
-            for (int j = 0; j < 7; j++)
-            {
-                if(game.PositionOnBoard(i, j))
-                    MovePlateSpawn(i, j, obj);
-            }
 
+        if (controllerScript.difficulty == 0 || game.isWhiteTurn == controllerScript.isPlayerWhite)    // No AI
+        {
+            // Creating the move plates
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    if (game.PositionOnBoard(i, j))
+                        MovePlateSpawn(i, j, obj);
+                }
+
+            }
+        }
+        else // AI
+        {
+            AIBehaviour ai = controllerScript.opponent;
+            Move move = ai.CalculateMove(game);
+            game.pieceReference = obj;
+            game.ApplyMove(move);
+            game.isWhiteTurn = !game.isWhiteTurn;
         }
     }
 
